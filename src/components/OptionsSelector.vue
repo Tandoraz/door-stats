@@ -56,6 +56,7 @@ function changeOption(option) {
 
 .options span:hover {
   border-color: hsla(160, 100%, 37%, 1);
+  color: hsla(160, 100%, 37%, 1);
 }
 
 .options span.active {

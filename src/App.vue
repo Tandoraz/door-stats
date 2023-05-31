@@ -5,9 +5,10 @@ import {reactive, ref} from 'vue'
 import TimeOpenChart from "@/components/TimeOpenChart.vue";
 import Error from "@/components/Error.vue";
 import OptionsSelector from "@/components/OptionsSelector.vue";
-import LineChart from "@/components/LineChart.vue";
 import HowManyEventsChart from "@/components/HowManyEventsChart.vue";
 import HowManyAlarmsChart from "@/components/HowManyAlarmsChart.vue";
+import HowManyEventsOverDaysChart from "@/components/HowManyEventsPerDaysChart.vue";
+import DailyDistributionChart from "@/components/DailyDistributionChart.vue";
 
 ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, ArcElement, LineElement, Colors, BarElement);
 
@@ -29,7 +30,6 @@ async function loadEvents(event) {
     errorMessage.value = "Failed to load door events: " + error.message;
     return;
   }
-  console.log(data);
   doorEvents.events = data.map(d => {
     return {created_at: new Date(d.created_at), event: d.event}
   });
@@ -41,13 +41,14 @@ async function loadEvents(event) {
 
 <template>
   <header>
-    <h1 class="green">Door Stats</h1>
+    <h1>Door Stats</h1>
     <OptionsSelector :active-option="1" @option-changed="loadEvents"></OptionsSelector>
     <Error :msg="errorMessage"></Error>
   </header>
 
   <main>
-    <LineChart :doorEvents="doorEvents"></LineChart>
+    <DailyDistributionChart :doorEvents="doorEvents"></DailyDistributionChart>
+    <HowManyEventsOverDaysChart :doorEvents="doorEvents"></HowManyEventsOverDaysChart>
     <TimeOpenChart :doorEvents="doorEvents"></TimeOpenChart>
     <HowManyEventsChart :door-events="doorEvents"></HowManyEventsChart>
     <HowManyAlarmsChart :door-events="doorEvents"></HowManyAlarmsChart>
