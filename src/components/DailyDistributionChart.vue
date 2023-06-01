@@ -16,12 +16,12 @@ const data = computed(() => {
       datasets: [{
         label: "Closed",
         data: events.filter(event => event.event === 'CLOSED').map(event => {
-          return {x: event.created_at.getHours()*60 + event.created_at.getMinutes(), y: 1.4}
+          return {x: event.created_at.getHours() * 60 + event.created_at.getMinutes(), y: 1.4}
         }),
       }, {
         label: "Open",
         data: events.filter(event => event.event === 'OPEN').map(event => {
-          return {x: event.created_at.getHours()*60 + event.created_at.getMinutes(), y: 1.6}
+          return {x: event.created_at.getHours() * 60 + event.created_at.getMinutes(), y: 1.6}
         }),
       }]
     }
@@ -41,11 +41,11 @@ const options = {
   responsive: true,
   scales: {
     x: {
-      max: 24*60,
+      max: 24 * 60,
       min: 0,
       type: 'linear',
       ticks: {
-        callback: function(value) {
+        callback: function (value) {
           return `${Math.floor(value / 60)}:${value % 60}`
         }
       }
@@ -59,6 +59,18 @@ const options = {
   plugins: {
     legend: {
       position: 'top',
+    },
+    tooltip: {
+      callbacks: {
+        label: function (i) {
+          let label = i.dataset.label || '';
+          if (label) label += ': ';
+          if (i.parsed.x) {
+            label += `${Math.floor(i.parsed.x / 60)}:${i.parsed.x % 60}`
+          }
+          return label;
+        }
+      }
     },
     title: {
       display: true,
